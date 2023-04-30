@@ -1,0 +1,31 @@
+ docker-compose ls
+NAME                STATUS              CONFIG FILES
+swarm               running(5)          C:\Users\user\OneDrive\デスクトップ\docker-experiments\Swarm\docker-compose.yml
+ docker container ls
+CONTAINER ID   IMAGE                COMMAND                  CREATED              STATUS              PORTS                                                                   NAMES
+d31ff3485e38   docker:23.0.3-dind   "dockerd-entrypoint.…"   About a minute ago   Up About a minute   4789/0, 2375-2376/tcp, 7946/tcp, 7946/0                                 worker02
+f380d0f52d4b   docker:23.0.3-dind   "dockerd-entrypoint.…"   About a minute ago   Up About a minute   4789/0, 2375-2376/tcp, 7946/tcp, 7946/0                                 worker01
+8709a0716fbc   docker:23.0.3-dind   "dockerd-entrypoint.…"   About a minute ago   Up About a minute   4789/0, 2375-2376/tcp, 7946/tcp, 7946/0                                 worker03
+545dee9e7968   docker:23.0.3-dind   "dockerd-entrypoint.…"   About a minute ago   Up About a minute   2375-2376/tcp, 3375/tcp, 0.0.0.0:9000->9000/tcp, 0.0.0.0:8000->80/tcp   manager
+975c85fb2ce7   registry:2.6         "/entrypoint.sh /etc…"   About a minute ago   Up About a minute   0.0.0.0:5000->5000/tcp                                                  registry
+ docker container exec -it manager docker swarm init
+Swarm initialized: current node (wxxjsx1ov53e19rk6i47avnbe) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-5vtj9vsyefy3ycwcuyf9gvszrxu0zxb3xnvdrtfttegfrjf7il-8r80kv9kxet3hqfuzmdalz3dv 172.18.0.3:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+ docker container exec -it worker01 docker swarm join --token SWMTKN-1-5vtj9vsyefy3ycwcuyf9gvszrxu0zxb3xnvdrtfttegfrjf7il-8r80kv9kxet3hqfuzmdalz3dv 172.18.0.3:2377
+This node joined a swarm as a worker.
+ docker container exec -it worker02 docker swarm join --token SWMTKN-1-5vtj9vsyefy3ycwcuyf9gvszrxu0zxb3xnvdrtfttegfrjf7il-8r80kv9kxet3hqfuzmdalz3dv 172.18.0.3:2377
+This node joined a swarm as a worker.
+ docker container exec -it worker03 docker swarm join --token SWMTKN-1-5vtj9vsyefy3ycwcuyf9gvszrxu0zxb3xnvdrtfttegfrjf7il-8r80kv9kxet3hqfuzmdalz3dv 172.18.0.3:2377
+This node joined a swarm as a worker.
+ docker container exec -it manager docker node ls
+ID                            HOSTNAME       STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+wxxjsx1ov53e19rk6i47avnbe *   545dee9e7968   Ready     Active         Leader           23.0.3
+i6uao3k8jjnsqzo4llcz0gq28     8709a0716fbc   Ready     Active                          23.0.3
+p0kvf81sq5ow4ex6tprldnv5f     d31ff3485e38   Ready     Active                          23.0.3
+slmzyjpqzyoqiu09w3gmbp6fn     f380d0f52d4b   Ready     Active                          23.0.3
