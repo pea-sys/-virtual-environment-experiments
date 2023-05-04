@@ -1,0 +1,53 @@
+PS light-image\normal> docker image build -t ch09/entrykit:standard .
+[+] Building 18.8s (12/12) FINISHED
+ => [internal] load build definition from Dockerfile                                                               0.1s
+ => => transferring dockerfile: 356B                                                                               0.0s
+ => [internal] load .dockerignore                                                                                  0.7s
+ => => transferring context: 2B                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/alpine:3.7                                                      0.0s
+ => CACHED [1/8] FROM docker.io/library/alpine:3.7                                                                 0.0s
+ => [2/8] RUN apk add --no-cache wget                                                                              6.0s
+ => [3/8] RUN wget https://github.com/progrium/entrykit/releases/download/v0.4.0/entrykit_0.4.0_Linux_x86_64.tgz   6.6s
+ => [4/8] RUN tar -xvzf entrykit_0.4.0_Linux_x86_64.tgz                                                            0.9s
+ => [5/8] RUN rm entrykit_0.4.0_Linux_x86_64.tgz                                                                   0.8s
+ => [6/8] RUN mv entrykit /bin/entrykit                                                                            0.7s
+ => [7/8] RUN chmod +x /bin/entrykit                                                                               0.7s
+ => [8/8] RUN entrykit --symlink                                                                                   0.7s
+ => exporting to image                                                                                             1.0s
+ => => exporting layers                                                                                            0.9s
+ => => writing image sha256:aadf5a7d62d1d69be1aa5f065e7c0384ef546328cc7888452984a2b0d826f680                       0.0s
+ => => naming to docker.io/ch09/entrykit:standard                                                                  0.0s
+PS light-image> cd standard
+PS light-image\standard> docker image ls | grep entrykit | grep standard
+ch09/entrykit   standard   aadf5a7d62d1   26 minutes ago   35MB
+PS light-image\standard> docker image history ch09/entrykit:standard
+IMAGE          CREATED          CREATED BY                                      SIZE      COMMENT
+aadf5a7d62d1   26 minutes ago   RUN /bin/sh -c entrykit --symlink # buildkit    0B        buildkit.dockerfile.v0
+<missing>      26 minutes ago   RUN /bin/sh -c chmod +x /bin/entrykit # buil…   9.19MB    buildkit.dockerfile.v0
+<missing>      26 minutes ago   RUN /bin/sh -c mv entrykit /bin/entrykit # b…   9.19MB    buildkit.dockerfile.v0
+<missing>      26 minutes ago   RUN /bin/sh -c rm entrykit_0.4.0_Linux_x86_6…   0B        buildkit.dockerfile.v0
+<missing>      26 minutes ago   RUN /bin/sh -c tar -xvzf entrykit_0.4.0_Linu…   9.19MB    buildkit.dockerfile.v0
+<missing>      26 minutes ago   RUN /bin/sh -c wget https://github.com/progr…   2.71MB    buildkit.dockerfile.v0
+<missing>      26 minutes ago   RUN /bin/sh -c apk add --no-cache wget # bui…   480kB     buildkit.dockerfile.v0
+<missing>      4 years ago      /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
+<missing>      4 years ago      /bin/sh -c #(nop) ADD file:aa17928040e31624c…   4.21MB
+PS size> docker image build -f Dockerfile.light -t ch09/entrykit:light .
+[+] Building 0.3s (6/6) FINISHED
+ => [internal] load build definition from Dockerfile.light                                                         0.1s
+ => => transferring dockerfile: 389B                                                                               0.0s
+ => [internal] load .dockerignore                                                                                  0.1s
+ => => transferring context: 2B                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/alpine:3.7                                                      0.0s
+ => [1/2] FROM docker.io/library/alpine:3.7                                                                        0.0s
+ => CACHED [2/2] RUN apk add --no-cache wget &&     wget https://github.com/progrium/entrykit/releases/download/v  0.0s
+ => exporting to image                                                                                             0.0s
+ => => exporting layers                                                                                            0.0s
+ => => writing image sha256:682aa76ac97d038d72f2a8506faa9f1920090ce90a695cee14da8d511482dc23                       0.0s
+ => => naming to docker.io/ch09/entrykit:light                                                                     0.0s
+PS size> docker image ls | grep entrykit | grep light
+ch09/entrykit   light      682aa76ac97d   3 minutes ago   13.9MB
+PS size> docker history ch09/entrykit:light
+IMAGE          CREATED         CREATED BY                                      SIZE      COMMENT
+682aa76ac97d   4 minutes ago   RUN /bin/sh -c apk add --no-cache wget &&   …   9.67MB    buildkit.dockerfile.v0
+<missing>      4 years ago     /bin/sh -c #(nop)  CMD ["/bin/sh"]              0B
+<missing>      4 years ago     /bin/sh -c #(nop) ADD file:aa17928040e31624c…   4.21MB
