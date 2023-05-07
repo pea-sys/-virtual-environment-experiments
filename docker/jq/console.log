@@ -1,0 +1,21 @@
+PS jq> docker image build -t ch10/jq:latest .
+[+] Building 15.7s (7/7) FINISHED
+ => [internal] load build definition from Dockerfile                                                               0.3s
+ => => transferring dockerfile: 341B                                                                               0.1s
+ => [internal] load .dockerignore                                                                                  0.2s
+ => => transferring context: 2B                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/alpine:3.7                                                      4.7s
+ => [auth] library/alpine:pull token for registry-1.docker.io                                                      0.0s
+ => CACHED [1/2] FROM docker.io/library/alpine:3.7@sha256:8421d9a84432575381bfabd248f1eb56f3aa21d9d7cd2511583c68c  0.0s
+ => => resolve docker.io/library/alpine:3.7@sha256:8421d9a84432575381bfabd248f1eb56f3aa21d9d7cd2511583c68c9b7511d  0.1s
+ => [2/2] RUN apk add --no-cache --virtual=build-deps wget &&     wget https://github.com/stedolan/jq/releases/d  10.2s
+ => exporting to image                                                                                             0.2s
+ => => exporting layers                                                                                            0.2s
+ => => writing image sha256:6dd54688fd12b80bfbde5db49ce6f9e750dc357ec6ae3e4eefc066dffa7550eb                       0.0s
+ => => naming to docker.io/ch10/jq:latest                                                                          0.0s
+PS jq> docker image tag ch10/jq:latest ch10:jq:1.5
+Error parsing reference: "ch10:jq:1.5" is not a valid repository/tag: invalid reference format
+PS jq> docker image tag ch10/jq:latest ch10/jq:1.5
+PS jq> echo '{"version":100}'
+{"version":100}
+PS jq> echo '{"version":100}' | docker container run -i --rm ch10/jq:1.5 '.version'
