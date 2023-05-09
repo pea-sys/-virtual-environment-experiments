@@ -1,0 +1,20 @@
+PS sh> docker image build -t ch10/show-attr:latest .
+[+] Building 3.6s (9/9) FINISHED
+ => [internal] load build definition from Dockerfile                                                               0.1s
+ => => transferring dockerfile: 385B                                                                               0.0s
+ => [internal] load .dockerignore                                                                                  0.1s
+ => => transferring context: 2B                                                                                    0.0s
+ => [internal] load metadata for docker.io/library/alpine:3.7                                                      2.5s
+ => [auth] library/alpine:pull token for registry-1.docker.io                                                      0.0s
+ => [1/3] FROM docker.io/library/alpine:3.7@sha256:8421d9a84432575381bfabd248f1eb56f3aa21d9d7cd2511583c68c9b7511d  0.2s
+ => => resolve docker.io/library/alpine:3.7@sha256:8421d9a84432575381bfabd248f1eb56f3aa21d9d7cd2511583c68c9b7511d  0.2s
+ => [internal] load build context                                                                                  0.2s
+ => => transferring context: 248B                                                                                  0.1s
+ => CACHED [2/3] RUN apk add --no-cache --virtual=build-deps wget &&     wget https://github.com/stedolan/jq/rele  0.0s
+ => [3/3] COPY show-attr.sh /usr/local/bin/                                                                        0.2s
+ => exporting to image                                                                                             0.2s
+ => => exporting layers                                                                                            0.2s
+ => => writing image sha256:5b70563725dada3bb9a50a2e90c09acae277e8437e677c1db43e50bf03fc8526                       0.0s
+ => => naming to docker.io/ch10/show-attr:latest                                                                   0.0s
+PS sh> docker container run ch10/show-attr:latest username
+gihyo
