@@ -1,0 +1,7 @@
+PS C:\Users\user> kubectl apply -f dashboard-adminuser.yaml
+clusterrolebinding.rbac.authorization.k8s.io/admin-user created
+PS C:\Users\user> kubectl get clusterrolebinding.rbac.authorization.k8s.io/admin-user -n kubernetes-dashboard
+NAME         ROLE                        AGE
+admin-user   ClusterRole/cluster-admin   93s
+PS C:\Users\user> kubectl -n kubernetes-dashboard create token admin-user
+***************************************
