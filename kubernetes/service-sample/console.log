@@ -1,0 +1,23 @@
+PS C:\Users\user> kubectl apply -f service-sample\simple-replicaset-with-label.yml
+replicaset.apps/echo-spring created
+replicaset.apps/echo-summer created
+PS C:\Users\user> kubectl get pod -l app=echo -l release=summer
+NAME                READY   STATUS    RESTARTS   AGE
+echo-summer-9kgmv   2/2     Running   0          2m29s
+echo-summer-lpcmh   2/2     Running   0          2m29s
+PS C:\Users\user> kubectl get pod -l app=echo -l release=spring
+NAME                READY   STATUS    RESTARTS   AGE
+echo-spring-wsqf7   2/2     Running   0          2m40s
+PS C:\Users\user> kubectl apply -f service-sample\simple-service.yml
+service/echo created
+PS C:\Users\user> kubectl get svc echo
+NAME   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+echo   ClusterIP   10.109.170.182   <none>        80/TCP    14s
+PS C:\Users\user> kubectl run -i --rm --tty debug --image=gihyodocker/fundamental:0.1.0 --restart=Never -- bash -il
+If you don't see a command prompt, try pressing enter.
+debug:/# curl http://echo
+Hello Docker!!debug:/# curl http://echo
+
+
+PS C:\Users\user> kubectl logs -f echo-spring-dtblk -n default -c echo
+Error from server (NotFound): pods "echo-spring-dtblk" not found

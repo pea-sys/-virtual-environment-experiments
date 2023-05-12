@@ -1,0 +1,15 @@
+PS C:\Users\user> kubectl apply -f pod-sample\pod.yml
+pod/simple-echo created
+PS C:\Users\user> kubectl get pod
+NAME          READY   STATUS    RESTARTS   AGE
+simple-echo   2/2     Running   0          28m
+PS C:\Users\user> kubectl exec -it simple-echo sh -c nginx
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+/ #
+/ # exit
+command terminated with exit code 127
+PS C:\Users\user> kubectl logs -f simple-echo -c echo
+2023/04/15 12:16:42 start server
+PS C:\Users\user> kubectl delete pod simple-echo
+pod "simple-echo" deleted
+PS C:\Users\user>
