@@ -1,0 +1,57 @@
+PS C:\Windows\System32> kubectl apply -f sample-deployment.yml --record
+PS C:\Windows\System32> kubectl get deployment
+NAME   READY   UP-TO-DATE   AVAILABLE   AGE
+echo   3/3     3            3           2m37s
+PS C:\Windows\System32> kubectl get replicaset
+NAME              DESIRED   CURRENT   READY   AGE
+echo-6544fbbdb6   3         3         3       2m50s
+PS C:\Windows\System32> kubectl rollout history deployment echo
+deployment.apps/echo
+REVISION  CHANGE-CAUSE
+1         <none>
+
+PS C:\Windows\System32> kubectl apply -f sample-deployment.yml --record
+Flag --record has been deprecated, --record will be removed in the future
+deployment.apps/echo configured
+PS C:\Windows\System32> kubectl get pod
+NAME                    READY   STATUS              RESTARTS   AGE
+echo-6544fbbdb6-2mcdg   2/2     Terminating         0          98s
+echo-6544fbbdb6-lc24h   2/2     Running             0          8m45s
+echo-6544fbbdb6-nbp5m   2/2     Running             0          8m45s
+echo-6544fbbdb6-vbrzv   2/2     Running             0          8m45s
+echo-6d5549b84-5wpbp    0/2     ContainerCreating   0          5s
+echo-6d5549b84-xpmkz    0/2     ContainerCreating   0          5s
+
+PS C:\Windows\System32> kubectl rollout history deployment echo
+deployment.apps/echo
+REVISION  CHANGE-CAUSE
+1         kubectl.exe apply --filename=sample-deployment.yml --record=true
+2         kubectl.exe apply --filename=sample-deployment.yml --record=true
+
+PS C:\Windows\System32> kubectl rollout history deployment echo --revision=1
+deployment.apps/echo with revision #1
+Pod Template:
+  Labels:       app=echo
+        pod-template-hash=6544fbbdb6
+  Annotations:  kubernetes.io/change-cause:
+          kubectl.exe apply --filename=sample-deployment.y...
+  Containers:
+   nginx:
+    Image:      gihyodocker/nginx-proxy:latest
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Environment:
+      BACKEND_HOST:     localhost:8080
+    Mounts:     <none>
+   echo:
+    Image:      gihyodocker/echo:latest
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Environment:        <none>
+    Mounts:     <none>
+  Volumes:      <none>
+
+PS C:\Windows\System32> kubectl rollout undo deployment echo
+deployment.apps/echo rolled back
+PS C:\Windows\System32> kubectl delete -f sample-deployment.yml
+deployment.apps "echo" deleted

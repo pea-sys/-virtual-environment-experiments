@@ -1,0 +1,7 @@
+PS C:\Users\user> kubectl apply -f nodeport-service\node-port-service.yaml
+service/echo configured
+PS C:\Users\user> kubectl get svc echo
+NAME   TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+echo   NodePort   10.109.170.182   <none>        80:31005/TCP   62m
+PS C:\Users\user> curl http://127.0.0.1:31005
+Hello Docker!!
