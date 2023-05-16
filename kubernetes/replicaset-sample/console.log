@@ -1,0 +1,9 @@
+PS C:\Users\user> kubectl apply -f simple-replicaset.yml
+replicaset.apps/echo created
+PS C:\Windows\System32> kubectl get pod
+NAME         READY   STATUS    RESTARTS   AGE
+echo-7wg9c   2/2     Running   0          15m
+echo-b6228   2/2     Running   0          15m
+echo-zb5lj   2/2     Running   0          15m
+PS C:\Users\user> kubectl delete -f replicaset-sample\simple-replicaset.yml
+replicaset.apps "echo" deleted
