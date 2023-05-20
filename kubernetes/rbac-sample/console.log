@@ -1,0 +1,48 @@
+PS C:\Users\user> kubectl create serviceaccount gihyo-user
+serviceaccount/gihyo-user created
+PS C:\Users\user> kubectl get serviceaccount gihyo-user -o yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  creationTimestamp: "2023-04-18T11:50:36Z"
+  name: gihyo-user
+  namespace: default
+  resourceVersion: "124335"
+  uid: d37c6bc8-d1ce-4283-966b-bc23b81e0a17
+PS C:\Users\user> kubectl get secret gihyo-user-token-dwwmp -o yaml
+Error from server (NotFound): secrets "gihyo-user-token-dwwmp" not found
+PS C:\Users\user> kubectl create token gihyo-user
+eyJhbGciOiJSUzI1NiIsImtpZCI6InFJX0JfdFR2Tzh4Rmp0bFhoODBjdTRnME1fR3M1R2lQekRaQkJLUXpMY00ifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNjgxODIyODE2LCJpYXQiOjE2ODE4MTkyMTYsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0Iiwic2VydmljZWFjY291bnQiOnsibmFtZSI6ImdpaHlvLXVzZXIiLCJ1aWQiOiJkMzdjNmJjOC1kMWNlLTQyODMtOTY2Yi1iYzIzYjgxZTBhMTcifX0sIm5iZiI6MTY4MTgxOTIxNiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OmRlZmF1bHQ6Z2loeW8tdXNlciJ9.P5RtzIwXuqI9kj25OwhL6PhDthkVQ_FsnBSm7mWzOzoPRVr_otcfn3dNGWwwWxnZFjPZdfiQttwIi6cB7wIXbfcsic1fGScGBsKw20_7uC8W-JB34diUHk2bPe4sACwS421A_-7DjbrVJQmcwbjbIhkCy7wgy_DCnKoqjlFmdoyiUoeM6WOsuY3T5MQICR4FYqge8RrT4HWqf1O4E_kZiCYg_8E09mBzexRZi4sJEO0L23qlfxZnC5Zjj_fllN23ZERi9Jswk_88lBKprwVt5e-oJMq_a-0pSAk9vLQi3IyBg_OA3s9iHXnxwMVWFs18SjyRoiUYr05vc5XNVUr9Yw
+PS C:\Users\user> kubectl config view
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://kubernetes.docker.internal:6443
+  name: docker-desktop
+contexts:
+- context:
+    cluster: docker-desktop
+    user: docker-desktop
+  name: docker-desktop
+current-context: docker-desktop
+kind: Config
+preferences: {}
+users:
+- name: docker-desktop
+  user:
+    client-certificate-data: REDACTED
+    client-key-data: REDACTED
+PS C:\Users\user> kubectl config set-credentials gihyo-user --token=eyJhbGciOiJSUzI1NiIsImtpZCI6InFJX0JfdFR2Tzh4Rmp0bFhoODBjdTRnME1fR3M1R2lQekRaQkJLUXpMY00ifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNjgxODIyODE2LCJpYXQiOjE2ODE4MTkyMTYsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0Iiwic2VydmljZWFjY291bnQiOnsibmFtZSI6ImdpaHlvLXVzZXIiLCJ1aWQiOiJkMzdjNmJjOC1kMWNlLTQyODMtOTY2Yi1iYzIzYjgxZTBhMTcifX0sIm5iZiI6MTY4MTgxOTIxNiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OmRlZmF1bHQ6Z2loeW8tdXNlciJ9.P5RtzIwXuqI9kj25OwhL6PhDthkVQ_FsnBSm7mWzOzoPRVr_otcfn3dNGWwwWxnZFjPZdfiQttwIi6cB7wIXbfcsic1fGScGBsKw20_7uC8W-JB34diUHk2bPe4sACwS421A_-7DjbrVJQmcwbjbIhkCy7wgy_DCnKoqjlFmdoyiUoeM6WOsuY3T5MQICR4FYqge8RrT4HWqf1O4E_kZiCYg_8E09mBzexRZi4sJEO0L23qlfxZnC5Zjj_fllN23ZERi9Jswk_88lBKprwVt5e-oJMq_a-0pSAk9vLQi3IyBg_OA3s9iHXnxwMVWFs18SjyRoiUYr05vc5XNVUr9Yw
+User "gihyo-user" set.
+PS C:\Users\user> kubectl config set-context gihyo-k8s-gihyo-user --cluster=gihyo-k8s --user=gihyo-user
+Context "gihyo-k8s-gihyo-user" created.
+PS C:\Users\user> kubectl config use-context gihyo-k8s-gihyo-user
+Switched to context "gihyo-k8s-gihyo-user".
+PS C:\Users\user> kubectl get pod --all-namespaces
+Unable to connect to the server: dial tcp [::1]:8080: connectex: No connection could be made because the target machine actively refused it.
+PS C:\Users\user> kubectl config use-context docker-desktop
+Switched to context "docker-desktop".
+PS C:\Users\user> kubectl get pod --all-namespaces
+NAMESPACE              NAME                                         READY   STATUS             RESTARTS          AGE
+default                basic-auth-7c44688765-c2v5q                  0/2     Pending            0                 22h
