@@ -1,0 +1,119 @@
+PS C:\Users\user\source\repos> git clone https://github.com/pea-sys/charts.git
+Cloning into 'charts'...
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (3/3), done.
+PS C:\Users\user\source\repos> cd charts
+PS C:\Users\user\source\repos\charts> git checkout -b gh-pages
+Switched to a new branch 'gh-pages'
+PS C:\Users\user\source\repos\charts> mkdir stable
+
+    Directory: C:\Users\user\source\repos\charts
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----          2023/04/20    22:17                stable
+
+PS C:\Users\user\source\repos\charts> cd stable
+PS helm\helm.exe create example
+Creating example
+PS helm\helm.exe package example
+Successfully packaged chart and saved it to: C:\Users\user\source\repos\charts\stable\example-0.1.0.tgz
+PS helm\helm.exe repo index .
+PS C:\Users\user\source\repos\charts\stable> ls
+
+    Directory: C:\Users\user\source\repos\charts\stable
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----          2023/04/20    22:17                example
+-a---          2023/04/20    22:18           3752 example-0.1.0.tgz
+-a---          2023/04/20    22:19            388 index.yaml
+
+PS C:\Users\user\source\repos\charts\stable> tree .
+フォルダー パスの一覧
+ボリューム シリアル番号は 000000F6 1471:7040 です
+C:\USERS\USER\SOURCE\REPOS\CHARTS\STABLE
+└─example
+    ├─charts
+    └─templates
+        └─tests
+PS C:\Users\user\source\repos\charts\stable> git add .
+warning: in the working copy of 'stable/example/.helmignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stable/example/Chart.yaml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stable/example/templates/NOTES.txt', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stable/example/templates/_helpers.tpl', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stable/example/templates/deployment.yaml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stable/example/templates/hpa.yaml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stable/example/templates/ingress.yaml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stable/example/templates/service.yaml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stable/example/templates/serviceaccount.yaml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stable/example/templates/tests/test-connection.yaml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stable/example/values.yaml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'stable/index.yaml', LF will be replaced by CRLF the next time Git touches it
+PS C:\Users\user\source\repos\charts\stable> git commit -m "add first chart"
+[gh-pages fb76232] add first chart
+ 13 files changed, 419 insertions(+)
+ create mode 100644 stable/example-0.1.0.tgz
+ create mode 100644 stable/example/.helmignore
+ create mode 100644 stable/example/Chart.yaml
+ create mode 100644 stable/example/templates/NOTES.txt
+ create mode 100644 stable/example/templates/_helpers.tpl
+ create mode 100644 stable/example/templates/deployment.yaml
+ create mode 100644 stable/example/templates/hpa.yaml
+ create mode 100644 stable/example/templates/ingress.yaml
+ create mode 100644 stable/example/templates/service.yaml
+ create mode 100644 stable/example/templates/serviceaccount.yaml
+ create mode 100644 stable/example/templates/tests/test-connection.yaml
+ create mode 100644 stable/example/values.yaml
+ create mode 100644 stable/index.yaml
+PS C:\Users\user\source\repos\charts\stable> git push origin gh-pages
+Enumerating objects: 20, done.
+Counting objects: 100% (20/20), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (18/18), done.
+Writing objects: 100% (19/19), 9.54 KiB | 1.06 MiB/s, done.
+Total 19 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), done.
+remote:
+remote: Create a pull request for 'gh-pages' on GitHub by visiting:
+remote:      https://github.com/pea-sys/charts/pull/new/gh-pages
+remote:
+To https://github.com/pea-sys/charts.git
+ * [new branch]      gh-pages -> gh-pages
+PS C:\Users\user\source\repos\charts\stable> curl https://pea-sys.github.io/charts/stable/index.yaml
+apiVersion: v1
+entries:
+  example:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-04-20T22:19:14.7555868+09:00"
+    description: A Helm chart for Kubernetes
+    digest: 69812d5e2c5ba3d1a35a45cf418d33dfd8354c52a7cedf2250edc0e4283a24dc
+    name: example
+    type: application
+    urls:
+    - example-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-04-20T22:19:14.7511836+09:00"
+PS helm\helm.exe repo add gihyo-stable https://pea-sys.github.io/charts/stable
+"gihyo-stable" has been added to your repositories
+PS helm\helm.exe repo update
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "gihyo-stable" chart repository
+...Successfully got an update from the "incubator" chart repository
+Update Complete. ⎈Happy Helming!⎈
+
+PS helm\helm.exe install example gihyo-stable/example
+NAME: example
+LAST DEPLOYED: Thu Apr 20 22:29:29 2023
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=example,app.kubernetes.io/instance=example" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT

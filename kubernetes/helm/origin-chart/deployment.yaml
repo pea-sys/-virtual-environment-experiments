@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "echo.fullname" . }}
+  labels:
+    apps: {{ template "echo.name" .}}
+    chart: {{template "echo.chart" .}}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service}}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "echo.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "echo.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: nginx
+          image: "{{ .Values.nginx.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.nginx.healthCheck }}
+              port: 80
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.nginx.healthCheck }}
+              port: 80
+          env:
+            - name: BACKEND_HOST
+              value: {{ .Values.nginx.backendHost | quote }}
+            - name: echo
+              image: "{{ .Values.nginx.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
+              ports:
+                containerPort: {{ .Value.echo.httpPort }}
+              env:
+                - name: HTTP_PORT
+                  value: {{ .Value.echo.httpPort | quote }}
+                  env:
+                    - name: HTTP_PORT
+                      value: {{ .Value.echo.httpPort | quote }}
+                  resources:
+{{ toYaml .Value.resources | indent 12 }}
+  {{- with .Values.nodeSelector }}
+    nodeSelector:
+{{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.affiny }}
+    affinity:
+{{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+    tolerations:
+{{ toYaml . | indent 8 }}
+  {{- end }}

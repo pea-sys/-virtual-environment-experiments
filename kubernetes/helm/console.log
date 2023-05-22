@@ -1,0 +1,52 @@
+PS C:\Windows\System32> helm repo add bitnami https://charts.bitnami.com/bitnami
+"bitnami" has been added to your repositories
+PS C:\Windows\System32>helm.exe install redmine bitnami/redmine -f redmine.yaml
+coalesce.go:223: warning: destination for mariadb.networkPolicy.egressRules.customRules is a table. Ignoring non-table value ([])
+NAME: redmine
+LAST DEPLOYED: Wed Apr 19 11:22:03 2023
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+CHART NAME: redmine
+CHART VERSION: 21.1.1
+APP VERSION: 5.0.5
+
+** Please be patient while the chart is being deployed **
+
+1. Get the Redmine URL:
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        Watch the status with: 'kubectl get svc --namespace default -w redmine'
+  export SERVICE_IP=$(kubectl get svc --namespace default redmine --template "{{ range (index .status.loadBalancer.ingress 0) }}{{ . }}{{ end }}")
+
+  echo "Redmine URL: http://$SERVICE_IP/"
+
+2. Login with the following credentials
+
+  export REDMINE_USERNAME=gihyo
+  export REDMINE_PASSWORD=$(kubectl get secret --namespace "default" redmine -o jsonpath="{.data.redmine-password}" | base64 -d)
+
+  echo Username: $REDMINE_USERNAME
+  echo Password: $REDMINE_PASSWORD
+
+  You can access the DB using the following password:
+  export MARIADB_PASSWORD=$(kubectl get secret --namespace "default" redmine-mariadb -o jsonpath="{.data.mariadb-password}" | base64 -d)
+
+PS C:\Windows\System32> kubectl get service,deployment
+NAME                            TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+service/basic-auth              NodePort       10.111.107.4     <none>        80:30060/TCP   47h
+service/echo                    ClusterIP      10.109.170.182   <none>        80/TCP         3d12h
+service/kubernetes              ClusterIP      10.96.0.1        <none>        443/TCP        4d6h
+service/redmine                 LoadBalancer   10.107.157.124   <pending>     80:31515/TCP   10h
+service/redmine-mariadb         ClusterIP      10.101.215.234   <none>        3306/TCP       10h
+service/redmine-postgresql      ClusterIP      10.109.136.253   <none>        5432/TCP       10h
+service/redmine-postgresql-hl   ClusterIP      None             <none>        5432/TCP       10h
+
+NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/basic-auth   0/1     1            0           47h
+deployment.apps/redmine      0/1     1            0           10h
+
+PS C:\Windows\System32> helm.exe delete redmine
+release "redmine" uninstalled
