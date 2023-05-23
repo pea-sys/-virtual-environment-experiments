@@ -1,0 +1,122 @@
+PS C:\Users\user> kubectl apply -f echo-version-hc.yaml
+deployment.apps/echo-version-hc created
+PS C:\Users\user> kubectl describe pod -l app=echo-version
+Name:             echo-version-659996fd59-w6vzm
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             docker-desktop/192.168.65.4
+Start Time:       Fri, 21 Apr 2023 07:03:21 +0900
+Labels:           app=echo-version
+                  pod-template-hash=659996fd59
+Annotations:      <none>
+Status:           Running
+IP:               10.1.0.21
+IPs:
+  IP:           10.1.0.21
+Controlled By:  ReplicaSet/echo-version-659996fd59
+Containers:
+  echo-version:
+    Container ID:   docker://8f86f55d73dd29a97649820ddf8b74c728bc36c64ad978ba4cc86fe1361ec332
+    Image:          gihyodocker/echo-version:0.2.0
+    Image ID:       docker-pullable://gihyodocker/echo-version@sha256:e2f00dca7de16bae74258d360f93fceb821d143dad71acad8b07feebb5298c90
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 21 Apr 2023 21:51:57 +0900
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    255
+      Started:      Fri, 21 Apr 2023 07:03:30 +0900
+      Finished:     Fri, 21 Apr 2023 21:49:55 +0900
+    Ready:          True
+    Restart Count:  1
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-57mcg (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  kube-api-access-57mcg:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason          Age    From               Message
+  ----    ------          ----   ----               -------
+  Normal  Scheduled       14h    default-scheduler  Successfully assigned default/echo-version-659996fd59-w6vzm to docker-desktop
+  Normal  Pulling         14h    kubelet            Pulling image "gihyodocker/echo-version:0.2.0"
+  Normal  Pulled          14h    kubelet            Successfully pulled image "gihyodocker/echo-version:0.2.0" in 6.786149388s
+  Normal  Created         14h    kubelet            Created container echo-version
+  Normal  Started         14h    kubelet            Started container echo-version
+  Normal  SandboxChanged  6m29s  kubelet            Pod sandbox changed, it will be killed and re-created.
+  Normal  Pulled          5m54s  kubelet            Container image "gihyodocker/echo-version:0.2.0" already present on machine
+  Normal  Created         5m48s  kubelet            Created container echo-version
+  Normal  Started         5m39s  kubelet            Started container echo-version
+
+
+Name:             echo-version-hc-6cb4bcbd55-z8gw5
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             docker-desktop/192.168.65.4
+Start Time:       Fri, 21 Apr 2023 21:57:16 +0900
+Labels:           app=echo-version
+                  pod-template-hash=6cb4bcbd55
+Annotations:      <none>
+Status:           Running
+IP:               10.1.0.26
+IPs:
+  IP:           10.1.0.26
+Controlled By:  ReplicaSet/echo-version-hc-6cb4bcbd55
+Containers:
+  echo-version:
+    Container ID:   docker://8ff82b8eded0352b2bd8b7c167d2317973a4a21e31b7d8510ebb3e9c016daa6a
+    Image:          gihyodocker/echo-version:0.1.0
+    Image ID:       docker-pullable://gihyodocker/echo-version@sha256:998de1640c9b67988f85ad5a8bbcf37eb8a2512c689ac0be292249c92d1de643
+    Port:           8080/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Fri, 21 Apr 2023 21:57:30 +0900
+    Ready:          False
+    Restart Count:  0
+    Liveness:       exec [cat /live.txt] delay=3s timeout=1s period=5s #success=1 #failure=3
+    Readiness:      http-get http://:8080/hc delay=15s timeout=3s period=10s #success=1 #failure=3
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-lfjlr (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             False
+  ContainersReady   False
+  PodScheduled      True
+Volumes:
+  kube-api-access-lfjlr:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  21s   default-scheduler  Successfully assigned default/echo-version-hc-6cb4bcbd55-z8gw5 to docker-desktop
+  Normal  Pulling    14s   kubelet            Pulling image "gihyodocker/echo-version:0.1.0"
+  Normal  Pulled     10s   kubelet            Successfully pulled image "gihyodocker/echo-version:0.1.0" in 4.478780486s
+  Normal  Created    8s    kubelet            Created container echo-version
+  Normal  Started    6s    kubelet            Started container echo-version
