@@ -1,0 +1,23 @@
+PS C:\Users\user> kubectl apply -f elasticsearch.yaml
+persistentvolumeclaim/elasticsearch-pvc created
+service/elasticsearch created
+deployment.apps/elasticsearch created
+configmap/elasticsearch-config created
+PS C:\Users\user> kubectl apply -f kibana.yaml
+service/kibana created
+deployment.apps/kibana created
+PS C:\Users\user> kubectl apply -f fluentd-daemonset.yaml
+daemonset.apps/fluentd created
+PS C:\Users\user> kubectl -m kube-system get pod -l app=fluentd-logging
+error: unknown shorthand flag: 'm' in -m
+See 'kubectl get --help' for usage.
+PS C:\Users\user> kubectl -n kube-system get pod -l app=fluentd-logging
+NAME            READY   STATUS    RESTARTS   AGE
+fluentd-g59dq   1/1     Running   0          4m59s
+PS C:\Users\user> kubectl apply -f echo created
+deployment.apps/echo created
+PS C:\Users\user> curl http://localhost:30080
+curl: (52) Empty reply from server
+PS C:\Users\user> curl http://localhost:30080
+Hello Docker!!
+PS C:\Users\user> curl http://localhost:30080
