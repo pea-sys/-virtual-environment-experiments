@@ -1,0 +1,14 @@
+PS C:\Users\user> kubectl apply -f affinity\pod-affinity-deployment.yaml
+deployment.apps/echo configured
+PS C:\Users\user> kubectl get pod
+NAME                   READY   STATUS              RESTARTS      AGE
+echo-97d7777c6-7sw4t   0/2     ContainerCreating   0             13s
+echo-97d7777c6-vzwbs   0/2     ContainerCreating   0             13s
+echo-97d7777c6-w6gd5   2/2     Running             4 (21m ago)   4h52m
+echo-bf89db948-g2zsk   0/2     Pending             0             13s
+
+PS C:\Users\user> kubectl apply -f affinity\hpa.yaml
+horizontalpodautoscaler.autoscaling/echo created
+PS C:\Users\user> kubectl get hpa
+NAME   REFERENCE         TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+echo   Deployment/echo   <unknown>/40%   1         3         0          22s
